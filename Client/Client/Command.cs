@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exceptions
+namespace Client
 {
-    public class Exceptions
+    internal class Command
     {
     }
 }

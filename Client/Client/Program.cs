@@ -1,41 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Session;
-using Tickets;
-using API;
-using Exceptions;
-using Commands;
 
 namespace Client
 {
-    public class UI
-    {
-
-    }
-
     internal class Program
     {
-
-        static async Task Main(string[] args)  // async Task!
+        static async Task Main(string[] args)
         {
-            Session.Auth session = new Session.Auth();
-            TUI.TUI tui = new TUI.TUI(session);
-            while (true)
-            {
-                if (session.auth)
-                {
-                    tui.Main();
-                }
-                else
-                {
-                    await tui.login();  // await!!
-                }
-            }
-        }
+            Session session = new Session();
+            session.Auth("demo@zmro.dev", "123");
 
+            // Todo command pattern for user commands
+
+            // Get Users via Get
+            //Console.WriteLine(await api.Request(RequestType.Get, "users", new {}));
+
+            // Auth a user via Post
+            //Console.WriteLine(await api.Request(RequestType.Post, "auth", new { Email = "demo@zmro.dev", Password = "123" }));
+            
+            Console.Read();
+            
+        }
     }
 }

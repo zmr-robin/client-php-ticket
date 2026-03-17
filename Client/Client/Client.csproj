@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BC0510D6-B932-427E-AFCE-E18AE6A39455}</ProjectGuid>
+    <ProjectGuid>{87125C85-F542-468F-ADC9-79B57B33C0BC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Client</RootNamespace>
     <AssemblyName>Client</AssemblyName>
@@ -46,14 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API.cs" />
-    <Compile Include="Commands.cs" />
-    <Compile Include="Exceptions.cs" />
-    <Compile Include="Session.cs" />
+    <Compile Include="Api.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tickets.cs" />
-    <Compile Include="TUI.cs" />
+    <Compile Include="Session.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>572</x>
+      <y>704</y>
+      <w>231</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Get
+--
++ send() : object</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>957</x>
+      <y>451</y>
+      <w>231</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt; abstract &gt;&gt;
+Request
+--
+- url : String
+- key : String
+--
++ send() : object</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1078</x>
+      <y>704</y>
+      <w>231</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Put
+--
++ send() : object</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>825</x>
+      <y>704</y>
+      <w>231</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Post
+--
++ send() : object</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1342</x>
+      <y>704</y>
+      <w>231</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Delete
+--
++ send() : object</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>682</x>
+      <y>550</y>
+      <w>297</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>250.0;10.0;10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>935</x>
+      <y>550</y>
+      <w>132</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;100.0;80.0;10.0;80.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1078</x>
+      <y>550</y>
+      <w>143</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;110.0;80.0;110.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1177</x>
+      <y>550</y>
+      <w>297</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;250.0;10.0;250.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1540</x>
+      <y>451</y>
+      <w>330</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Api
+--
+- session : Session
+--
++ request(Session session, Array data, 
+String method, String endpoint)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1177</x>
+      <y>495</y>
+      <w>385</w>
+      <h>33</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;330.0;10.0</additional_attributes>
+  </element>
+</diagram>

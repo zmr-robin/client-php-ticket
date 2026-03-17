@@ -1,63 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 using Newtonsoft.Json;
-using TUI;
-using Session;
-using System.Threading;
+using System.Net.Http;
+using System.Net;
 
-namespace API
+
+namespace Client
 {
-    public class API
+    internal enum RequestType
     {
-        public string apiUrl = "http://ticket.zmro.net/";
-        public HttpClient client = new HttpClient();
+        Get, Post, Put, Delete
     }
 
-    public class Request : API
+    internal abstract class Request
     {
-        public string result;
-        public Request() {}
+        public string Endpoint;
+        public string Key;
+        public object RequestData;
+        public string Result;
+        public HttpClient HttpClient = new HttpClient();
 
-        public async Task<string> Get(string endpoint, string apiKey)
-        {
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
-
-            var cts = new CancellationTokenSource();
-            var spinnerTask = Task.Run(() => TUI.TUI.Spinner("get...", cts.Token));
-
-            HttpResponseMessage response = await client.GetAsync(apiUrl + endpoint);
-            result = await response.Content.ReadAsStringAsync();
-
-            cts.Cancel();
-            await spinnerTask;
-
-            return result;
-
+        public Request(string enpoint, string key, object body) {
+            Endpoint = enpoint;
+            Key = key;
+            RequestData = body;
+            HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         }
+    }
 
-        public async Task<string> Post(string endpoint, object body, string apiKey = "")
+    internal class Get : Request
+    {
+        public Get(string enpoint, string key, object body) : base (enpoint, key, body){}
+
+        public async Task<object> Send()
         {
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+            HttpResponseMessage response = await HttpClient.GetAsync(Endpoint);
+            Result = await response.Content.ReadAsStringAsync();
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(Result);
+        }
+    }
 
-            var json = JsonConvert.SerializeObject(body);
+    internal class Post : Request
+    {
+        public Post(string enpoint, string key, object body) : base(enpoint, key, body) { }
+
+        public async Task<object> Send()
+        {
+            var json = JsonConvert.SerializeObject(RequestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var cts = new CancellationTokenSource();
-            var spinnerTask = Task.Run(() => TUI.TUI.Spinner("post...", cts.Token));
-
-            HttpResponseMessage response = await client.PostAsync(apiUrl + endpoint, content);
-            result = await response.Content.ReadAsStringAsync();
-
-            cts.Cancel();
-            await spinnerTask;
-            
-            return result;
+            HttpResponseMessage response = await HttpClient.PostAsync(Endpoint, content);
+            Result = await response.Content.ReadAsStringAsync();
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(Result);
         }
-
     }
 
+    internal class ApiFactory
+    {
+        public string Url;
+        public string Key;
+
+        public ApiFactory(string url)
+        {
+            Url = url;
+        }
+        public async Task<object> Request(RequestType requestType, string endpoint, object requestData)
+        {
+            switch (requestType)
+            {
+                case RequestType.Get:
+                    {
+                        Get controller = new Get(Url + endpoint, Key, requestData);
+                        return await controller.Send();
+                    }
+                case RequestType.Post:
+                    {
+                        Post controller = new Post(Url + endpoint, Key, requestData);
+                        return await controller.Send();
+                    }
+                case RequestType.Put:
+                    {
+                        return null;
+                    }
+                case RequestType.Delete:
+                    {
+                        return null;
+                    }
+                default:
+                    {
+                        return null;
+                    }
+            }
+        }
+    }
 }
