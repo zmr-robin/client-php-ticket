@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace Client
 {
@@ -11,18 +12,69 @@ namespace Client
         static async Task Main(string[] args)
         {
             Session session = new Session();
-            session.Auth("demo@zmro.dev", "123");
+            await session.Auth("demo@zmro.dev", "123");
+            session.ConnectCommandController(session);
+            while (true)
+            {
+                while (string.IsNullOrEmpty(session.Key))
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write("[");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("1. Login / 2. Signup");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write("]\n~ ");
+                    string userInput = Console.ReadLine();
+                    if (userInput == "1")
+                    {
+                        Console.Clear();
+                        while (string.IsNullOrEmpty(session.Key))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("[");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.Write("Email");
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("] ~ ");
+                            string inputEmail = Console.ReadLine();
 
-            // Todo command pattern for user commands
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("[");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.Write("Password");
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("] ~ ");
+                            string inputPassword = Console.ReadLine();
+                            await session.Auth(inputEmail, inputPassword);
+                        }
+                    } else if (userInput == "2")
+                    {
 
-            // Get Users via Get
-            //Console.WriteLine(await api.Request(RequestType.Get, "users", new {}));
+                    } else
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid option (1 or 2)");
+                    }
+                    
 
-            // Auth a user via Post
-            //Console.WriteLine(await api.Request(RequestType.Post, "auth", new { Email = "demo@zmro.dev", Password = "123" }));
-            
-            Console.Read();
-            
+                    
+                    
+                }
+                while (!string.IsNullOrEmpty(session.Key))
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write("[");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write(session.Commands.Current.GetType().Name);
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write("] ~ ");
+                    string input = Console.ReadLine();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    await session.Commands.Command(input);
+                }
+            }
+
         }
     }
 }

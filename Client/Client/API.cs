@@ -40,8 +40,8 @@ namespace Client
         public async Task<object> Send()
         {
             HttpResponseMessage response = await HttpClient.GetAsync(Endpoint);
-            Result = await response.Content.ReadAsStringAsync();
-            return Newtonsoft.Json.JsonConvert.DeserializeObject(Result);
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<dynamic>(result);
         }
     }
 
@@ -56,7 +56,7 @@ namespace Client
 
             HttpResponseMessage response = await HttpClient.PostAsync(Endpoint, content);
             Result = await response.Content.ReadAsStringAsync();
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(Result);
+            return JsonConvert.DeserializeObject<dynamic>(Result);
         }
     }
 
