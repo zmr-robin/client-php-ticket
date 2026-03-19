@@ -11,6 +11,7 @@ namespace Client
     {
 
         public ApiFactory Api = new ApiFactory("http://ticket.zmro.net/");
+        public UserController User;
         public Commands.CommandsController Commands;
         public string Key;
 
@@ -19,6 +20,10 @@ namespace Client
         public void ConnectCommandController(Session session)
         {
             Commands = new Commands.CommandsController(session);
+        }
+        public void ConnectUserController(Session session)
+        {
+            User = new UserController(session);
         }
 
         public async Task<dynamic> Auth(string email, string pass)

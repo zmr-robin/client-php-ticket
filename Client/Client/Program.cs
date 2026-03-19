@@ -12,8 +12,10 @@ namespace Client
         static async Task Main(string[] args)
         {
             Session session = new Session();
+            // Test credentials for auto login
             await session.Auth("demo@zmro.dev", "123");
             session.ConnectCommandController(session);
+            session.ConnectUserController(session);
             while (true)
             {
                 while (string.IsNullOrEmpty(session.Key))

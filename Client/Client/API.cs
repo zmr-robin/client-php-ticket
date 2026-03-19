@@ -60,6 +60,21 @@ namespace Client
         }
     }
 
+    internal class Put : Request
+    {
+        public Put(string enpoint, string key, object body) : base(enpoint, key, body) { }
+
+        public async Task<object> Send()
+        {
+            var json = JsonConvert.SerializeObject(RequestData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await HttpClient.PutAsync(Endpoint, content);
+            Result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<dynamic>(Result);
+        }
+    }
+
     internal class ApiFactory
     {
         public string Url;
@@ -85,7 +100,8 @@ namespace Client
                     }
                 case RequestType.Put:
                     {
-                        return null;
+                        Put controller = new Put(Url + endpoint, Key, requestData);
+                        return await controller.Send();
                     }
                 case RequestType.Delete:
                     {
