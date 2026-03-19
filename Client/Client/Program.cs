@@ -9,10 +9,23 @@ namespace Client
 {
     internal class Program
     {
+        private static string GetHiddenConsoleInput()
+        {
+            StringBuilder input = new StringBuilder();
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter) break;
+                if (key.Key == ConsoleKey.Backspace && input.Length > 0) input.Remove(input.Length - 1, 1);
+                else if (key.Key != ConsoleKey.Backspace) input.Append(key.KeyChar);
+            }
+            return input.ToString();
+        }
+
         static async Task Main(string[] args)
         {
             Session session = new Session();
-            // Test credentials for auto login
+            // Test credentials for auto login while debugging 
             await session.Auth("demo@zmro.dev", "123");
             session.ConnectCommandController(session);
             session.ConnectUserController(session);
@@ -46,11 +59,44 @@ namespace Client
                             Console.Write("Password");
                             Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write("] ~ ");
-                            string inputPassword = Console.ReadLine();
+                            string inputPassword = GetHiddenConsoleInput();
                             await session.Auth(inputEmail, inputPassword);
                         }
                     } else if (userInput == "2")
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("[");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Email");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("] ~ ");
+                        string inputEmail = Console.ReadLine();
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("[");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("First name");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("] ~ ");
+                        string inputFirstName = Console.ReadLine();
+
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("[");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Last name");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("] ~ ");
+                        string inputLastName = Console.ReadLine();
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("[");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Password");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("] ~ ");
+                        string inputPassword = GetHiddenConsoleInput();
+                        await session.Signup(inputEmail, inputFirstName, inputLastName, inputPassword);
 
                     } else
                     {
@@ -58,9 +104,6 @@ namespace Client
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid option (1 or 2)");
                     }
-                    
-
-                    
                     
                 }
                 while (!string.IsNullOrEmpty(session.Key))

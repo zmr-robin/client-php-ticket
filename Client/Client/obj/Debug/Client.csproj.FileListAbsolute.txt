@@ -18,3 +18,5 @@ C:\Users\robin\OneDrive\Doc\1 zmro\Ticket-System\client-php-ticket\Client\Client
 C:\Users\robin\OneDrive\Doc\1 zmro\Ticket-System\client-php-ticket\Client\Client\obj\Debug\Client.csproj.Up2Date
 C:\Users\robin\OneDrive\Doc\1 zmro\Ticket-System\client-php-ticket\Client\Client\obj\Debug\Client.exe
 C:\Users\robin\OneDrive\Doc\1 zmro\Ticket-System\client-php-ticket\Client\Client\obj\Debug\Client.pdb
+C:\Users\robin\OneDrive\Doc\1 zmro\Ticket-System\client-php-ticket\Client\Client\bin\Debug\ConsoleTables.dll
+C:\Users\robin\OneDrive\Doc\1 zmro\Ticket-System\client-php-ticket\Client\Client\bin\Debug\ConsoleTables.pdb

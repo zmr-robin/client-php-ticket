@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleTables;
 
 namespace Client
 {
@@ -15,6 +16,7 @@ namespace Client
             Session = session;
         }
 
+        // Get email ID of logged in user
         public async Task<string> GetCurrentEmailID()
         {
             string apiKey = Session.Key;
@@ -23,6 +25,24 @@ namespace Client
             // Get supporter email
             dynamic resultSupporter = await Session.Api.Request(RequestType.Get, "users/" + result["SupporterID"], new { });
             return resultSupporter["EmailID"];
+        }
+
+        public async Task Get()
+        {
+            dynamic result = await Session.Api.Request(RequestType.Get, "users", new {});
+            var table = new ConsoleTable("UserID", "EmailID", "RoleID", "First Name", "Last Name");
+            foreach(var user in result)
+            {
+                var userEmail = await Session.Api.Request(RequestType.Get, "emails/" + user["EmailID"], new { });
+                //Console.WriteLine(userEmail);
+                table.AddRow(user["UserID"], userEmail["Email"], user["RoleID"], user["FirstName"], user["LastName"]);
+            }
+            table.Write();
+        }
+
+        public async Task Whitelist(string email)
+        {
+            await Session.Api.Request(RequestType.Post, "users/invite", new { Email = email });
         }
     }
 }

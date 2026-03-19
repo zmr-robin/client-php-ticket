@@ -161,6 +161,68 @@ namespace Commands
 
     }
 
+    internal class Users : ICommand
+    {
+        static public Dictionary<string, string> CommandList = new Dictionary<string, string>
+        {
+            ["View"] = "View all users",
+            ["Whitelist {email}"] = "Whitelist a email for signup to the ticket system",
+        };
+
+        public Client.Session Session;
+        public Client.UserController Controller;
+        public Users(Client.Session session)
+        {
+            Session = session;
+            Controller = new UserController(Session);
+        }
+
+        public async Task Execute(string command)
+        {
+            switch (command)
+            {
+                case "Help":
+                    {
+                        Help();
+                        break;
+                    }
+                case "Clear":
+                    {
+                        Console.Clear();
+                        break;
+                    }
+                case "View":
+                    {
+                        await Controller.Get();
+                        break;
+                    }
+                case var prefix when command.StartsWith("Whitelist"):
+                    {
+                        string email = command.Replace("Whitelist ", "");
+                        await Controller.Whitelist(email);
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("Command not found, use 'Help' to learn about all available commands!");
+                        break;
+                    }
+            }
+        }
+
+        public void Help()
+        {
+            Console.WriteLine("Available commands for menu");
+            Console.WriteLine("---------------------------");
+            for (int i = 0; i < CommandList.Count; i++)
+            {
+                Console.WriteLine(CommandList.ElementAt(i).Key.PadRight(10) + CommandList.ElementAt(i).Value);
+            }
+            Console.WriteLine("---------------------------");
+        }
+
+    }
+
     internal class Menu : ICommand
     {
         static public Dictionary<string, string> CommandList = new Dictionary<string, string>
@@ -195,6 +257,7 @@ namespace Commands
                     }
                 case "Users":
                     {
+                        Session.Commands.ChangeCurrent(new Users(Session));
                         break;
                     }
                 case "Logout":
