@@ -26,11 +26,12 @@ namespace Client
         {
             Session session = new Session();
             // Test credentials for auto login while debugging 
-            await session.Auth("demo@zmro.dev", "123");
+            //await session.Auth("demo@zmro.dev", "123");
             session.ConnectCommandController(session);
             session.ConnectUserController(session);
             while (true)
             {
+                // If session key (api key) not set -> prompt user to login
                 while (string.IsNullOrEmpty(session.Key))
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -106,6 +107,7 @@ namespace Client
                     }
                     
                 }
+                // While session key is not null or empty -> allow user to use commands
                 while (!string.IsNullOrEmpty(session.Key))
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
